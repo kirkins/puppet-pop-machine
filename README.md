@@ -54,8 +54,8 @@ to the puppet server.
 
 https://github.com/adnanh/webhook
 
-I recommend the following hooks on this setup:
-_(trigger on left, puppet server command on left)_
+I recommend the following hooks on this setup
+_(trigger on left, puppet server command on left):_
 
 - Control-Repo updated          -> `r10k deploy environment`
 - Control-Repo Global updated   -> `cd /etc/puppetlabs/code && r10k puppetfile install`
@@ -149,3 +149,28 @@ the command should be run each time one of your branches is updated (see webhook
     |          |                                                                                                                                  
     +----------+                                                                                                                                  
                                                               
+
+## R10K file structure
+
+    /etc/puppetlabs/code
+    |── Puppetfile
+    |── local_modules
+    |   |── custom_facts
+    |   |── custom_files
+    |
+    |── environments
+        |── Coke
+        |   |── manifests
+        |       |── packages.pp
+        |
+        |── RC Cola
+        |   |── manifests
+        |       |── packages.pp
+        |
+        |── Coke FR
+        |   |── manifests
+        |       |── packages.pp
+        |
+        |── Coke FR #42
+            |── manifests
+                |── packages.pp
