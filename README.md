@@ -1,5 +1,9 @@
 # Puppet Deployment for IoT Pop Machines
 
+To install with all sub-modules run:
+
+    git clone --recurse-submodules git@github.com:kirkins/puppet-pop-machine.git
+
 ## puppet-docker-stack
 
 Docker-Compose setup for Puppet, PuppetDb, and 2 GUI applications
