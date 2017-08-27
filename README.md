@@ -53,3 +53,37 @@ You should have webhooks connecting control-repo and control-repo-globals
 to the puppet server.
 
 https://github.com/adnanh/webhook
+
+
+## Chart of Puppet Docker Stack
+
+         +------------+   +------------+
+         | GUI        |   | GUI        |
+         |            |   |            |
+         |            |   |            |
+         |            |   |            |
+         +--------^---+   +---^--------+
+                  |           |
+                  |           |
+                  |           |
+                  |           |
+                  |           |
+                 ++-----------+--+          +-----------------+
+                 | PuttetDb      |          | Puppet Server   |
+                 |               |          |                 |
+                 |               <---------->                 |
+                 |               |          |                 |
+                 |               |          |                 |
+                 |               |          |                 |
+                 +-------^-------+          +-----------------+
+                         |
+                         |
+                 +-------+-------+
+                 | Postgres      |
+                 |               |
+                 |               |
+                 |               |
+                 |               |
+                 |               |
+                 +---------------+
+
