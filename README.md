@@ -54,6 +54,12 @@ to the puppet server.
 
 https://github.com/adnanh/webhook
 
+I recommend the following hooks on this setup:
+_(trigger on left, puppet server command on left)_
+
+- Control-Repo updated          -> `r10k deploy environment`
+- Control-Repo Global updated   -> `cd /etc/puppetlabs/code && r10k puppetfile install`
+
 
 ## Chart of Puppet Docker Stack
 
@@ -108,7 +114,9 @@ https://github.com/adnanh/webhook
 
 ## R10K Chart
 
-Tree of commits where each branch represents the state of configuration files:
+Tree of commits where each branch represents the state of configuration files.
+On the puppet server running `R10K deploy environment` will populate `/etc/puppetlabs/code/environments`
+the command should be run each time one of your branches is updated (see webhooks).:
                                                                                                                                                       
                    +----------+                                                                                                                   
                    | Prod.    |                                                                                                                   
