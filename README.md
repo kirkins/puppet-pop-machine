@@ -125,3 +125,39 @@ https://github.com/adnanh/webhook
             |       |  |       |   |       |   |       |
             +-------+  +-------+   +-------+   +-------+
 
+
+## R10K Chart
+
+Tree of commits where each branch represents the state of configuration files:
+                                                                                                                                                      
+                   +----------+                                                                                                                   
+                   | Prod.    |                                                                                                                   
+                   |          |                                                                                                                   
+                   |          |                                                                                                                   
+                   |          |                                                                                                                   
+                   +-+-------++                                                                                                                   
+                     |       |                                                                                                                    
+                     |       |                                                                                                                    
+              +------+--+ +--+-------+                                                                                                            
+              | Coke    | | RC Cola  |                                                                                                            
+              |         | |          |                                                                                                            
+              |         | |          |                                                                                                            
+              |         | |          |                                                                                                            
+              +--+------+ +----------+                                                                                                            
+                 |                                                                                                                                
+                 |                                                                                                                                
+         +-------+--+                                                                                                                             
+         | Coke-FR  |                                                                                                                             
+         |          |                                                                                                                             
+         |          |                                                                                                                             
+         |          |                                                                                                                             
+         +--+-------+                                                                                                                             
+            |                                                                                                                                     
+            |                                                                                                                                     
+    +-------+--+                                                                                                                                  
+    | Coke-FR  |                                                                                                                                  
+    | Beta #42 |                                                                                                                                  
+    |          |                                                                                                                                  
+    |          |                                                                                                                                  
+    +----------+                                                                                                                                  
+                                                              
