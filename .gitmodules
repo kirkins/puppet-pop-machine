@@ -1,0 +1,15 @@
+[submodule "pop-machine-gui"]
+	path = pop-machine-gui
+	url = https://github.com/kirkins/pop-machine-demo
+[submodule "external-node-classifier"]
+	path = external-node-classifier
+	url = https://github.com/kirkins/external_node_classifier
+[submodule "control-repo"]
+	path = control-repo
+	url = https://github.com/kirkins/control-repo
+[submodule "control-repo-globals"]
+	path = control-repo-globals
+	url = https://github.com/kirkins/control-repo-globals
+[submodule "puppet-docker-stack"]
+	path = puppet-docker-stack
+	url = https://github.com/kirkins/puppet-docker-stack
