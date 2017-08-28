@@ -1,0 +1,259 @@
+* Puppt for IoT Updates and Monitoring
+  
+** Intro
+   
+    Smart Pop Machine
+    
+    Using Puppet to monitor and update devices
+   
+    |############################################|
+    |#|                           |##############|
+    |#|  =====  ..--''`  |~~``|   |##|````````|##|
+    |#|  |   |  \     |  :    |   |##| Exact  |##|
+    |#|  |___|   /___ |  | ___|   |##| Change |##|
+    |#|  /=__\  ./.__\   |/,__\   |##| Only   |##|
+    |#|  \__//   \__//    \__//   |##|________|##|
+    |#|===========================|##############|
+    |#|```````````````````````````|##############|
+    |#| =.._      +++     //////  |##############|
+    |#| \/  \     | |     \    \  |#|`````````|##|
+    |#|  \___\    |_|     /___ /  |#| _______ |##|
+    |#|  / __\\  /|_|\   // __\   |#| |1|2|3| |##|
+    |#|  \__//-  \|_//   -\__//   |#| |4|5|6| |##|
+    |#|===========================|#| |7|8|9| |##|
+    |#|```````````````````````````|#| ``````` |##|
+    |#| ..--    ______   .--._.   |#|[=======]|##|
+    |#| \   \   |    |   |    |   |#|  _   _  |##|
+    |#|  \___\  : ___:   | ___|   |#| ||| ( ) |##|
+    |#|  / __\  |/ __\   // __\   |#| |||  `  |##|
+    |#|  \__//   \__//  /_\__//   |#|  ~      |##|
+    |#|===========================|#|_________|##|
+    |#|```````````````````````````|##############|
+    |############################################|
+    |#|||||||||||||||||||||||||||||####```````###|
+    |#||||||||||||PUSH|||||||||||||####\|||||/###|
+    |############################################|
+    \\\\\\\\\\\\\\\\\\\\\\///////////////////////
+     |________________________________|CR98|___|
+
+** Scenario:
+
+   Puppet pop machine company. Wants to develop several modules on
+   an IoT in parallel. Also wants to deploy different software 
+   variations on different hardware. Interested in the ability to
+   A/B test features and layouts.  
+
+** Puppet is f(x) = f(f(x))
+   
+   Puppet tries to be Idempotent.
+
+   Idempotence:
+
+     is the property of certain operations in mathematics and computer 
+     science, that can be applied multiple times without changing the 
+     result beyond the initial application
+
+   No matter how many times you run a configuration on a server the 
+   end-state should remain the same.
+
+** Puppet allows for custom facts
+
+   We can add our own facts based on the state of the system
+
+   For example:
+   
+
+   #+BEGIN_SRC ruby
+
+       require 'json'
+       
+       if !File.exist? '/home/pi/pop_machine/data/pops.json'
+         exit
+       end
+       
+       system_json = JSON.parse(File.read('/home/pi/pop_machine/data/pops.json'))
+       
+       Facter.add(:pops) do
+         setcode do
+           system_json['pops']
+         end
+       end
+
+   #+END_SRC
+   
+   /Demo: goto www.p42k.win:8000/ 
+
+** Puppt has built in diagnostics
+
+   - disk space
+   - cpu usage
+   - hardware specs
+     
+   /Demo: diagnostics www.p42k.win/
+** External node classifier
+
+   Puppet uses an script called an ENC for classifying nodes.
+
+   Nodes (pop machines) will be configured based on classification.
+
+   The ENC script can be written in any language. As long as it takes
+   a hostname for input and outputs yaml like:
+
+       environment: production
+       
+*** Chart of ENC
+
+     Configuration Files
+    
+     +--------------+   +---------------+  +----------------+
+     | RC Cola      |   | Coke          |  | Coke beta #42  |
+     |              |   |               |  |                |
+     +-----------+--+   +-------+-------+  +--+-------------+
+                 |              |             |
+                 |              |             |
+                 |              |             |
+              +--+--------------+-------------+-+
+              | External Node Classifie         |
+              | (ENC)                           |
+              |                                 |
+              +--+---------+-----------+--------+
+                 |         |           |        |
+    Pop          |         |           |        |
+    Machines     |         |           |        |
+            +----+--+  +---+---+   +---+---+   ++------+
+            |       |  |       |   |       |   |       |
+            |       |  |       |   |       |   |       |
+            |       |  |       |   |       |   |       |
+            |       |  |       |   |       |   |       |
+            |       |  |       |   |       |   |       |
+            +-------+  +-------+   +-------+   +-------+
+
+   /demo: example of ENC/
+   https://github.com/kirkins/external_node_classifier
+
+** R10K - What is it
+   
+   A code management tool that uses a 'control-repo'
+   
+   - Each branch on the repo represents a single configuration.
+   - When R10K is run it extracts each branch into its own folder. 
+
+*** R10K file system
+
+   /etc/puppetlabs/code
+   |── Puppetfile
+   |── local_modules
+   |   |── custom_facts
+   |   |── custom_files
+   |
+   |── environments
+    |── Coke
+    |   |── manifests
+    |       |── packages.pp
+    |
+    |── RC Cola
+    |   |── manifests
+    |       |── packages.pp
+    |
+    |── Coke FR
+    |   |── manifests
+    |       |── packages.pp
+    |
+    |── Coke FR #42
+       |── manifests
+         |── packages.pp
+	 
+** R10K - for QA
+   
+   Allows for mixing and matching modules:
+   
+   QA team can create it's own branches each with a variation
+   in the packages installed.
+
+       #+BEGIN_SRC puppet
+  
+       $latest_packages = [
+         'pop_machine-gui',
+       ]
+       
+       $specific_packages = [
+         'vending_module=1.2',
+         'apple_pay=2.5',
+       ]
+
+       #+END_SRC
+
+** R10K - for development
+   
+   Allows for multiple teams to work on seperate branches
+   and map them to beta machines. Easily mix and match modules.
+
+** R10K - for release
+   
+    Potential for creating A/B tests for devices.
+
+                   +----------+                                                                                                                   
+                   | Prod.    |                                                                                                                   
+                   |          |                                                                                                                   
+                   |          |                                                                                                                   
+                   |          |                                                                                                                   
+                   +-+-------++                                                                                                                   
+                     |       |                                                                                                                    
+                     |       |                                                                                                                    
+              +------+--+ +--+-------+                                                                                                            
+              | Coke    | | RC Cola  |                                                                                                            
+              |         | |          |                                                                                                            
+              |         | |          |                                                                                                            
+              |         | |          |                                                                                                            
+              +--+------+ +----------+                                                                                                            
+                 |                                                                                                                                
+                 |                                                                                                                                
+         +-------+--+                                                                                                                             
+         | Coke-FR  |                                                                                                                             
+         |          |                                                                                                                             
+         |          |                                                                                                                             
+         |          |                                                                                                                             
+         +--+-------+                                                                                                                             
+            |                                                                                                                                     
+            |                                                                                                                                     
+    +-------+--+                                                                                                                                  
+    | Coke-FR  |                                                                                                                                  
+    | Beta #42 |                                                                                                                                  
+    |          |                                                                                                                                  
+    |          |                                                                                                                                  
+    +----------+
+
+** Puppet on Docker
+
+     +------------+   +------------+
+     | GUI        |   | GUI        |
+     |            |   |            |
+     +--------^---+   +---^--------+
+              |           |
+              |           |
+             ++-----------+--+      +-----------------+
+             | PuttetDb      |      | Puppet Server   |
+             |               |      |                 |
+             |               <------>                 |
+             |               |      |                 |
+             +-------^-------+      +-----------------+
+                     |
+                     |
+             +-------+-------+
+             | Postgres      |
+             |               |
+             +---------------+
+** Webhooks
+
+
+	+--------------+	   +--------------------+
+	| Control Repo |	   | Puppet server      |
+	|              |           |   	                |
+	|              +-----------> port 9000          |
+	+--------------+	   |                    |
+				   |                    |
+	+--------------+	   |                    |
+	| Global       |	   |                    |
+	| Control Repo +-----------> port 9001          |
+	|              |  	   |                    |
+	+--------------+	   +--------------------+
