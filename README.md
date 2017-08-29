@@ -1,5 +1,7 @@
 # Puppet Deployment for IoT Pop Machines
 
+[Presentation](https://github.com/kirkins/puppet-pop-machine/blob/master/presentation.org) format is [emacs org-mode](http://orgmode.org/).
+
 To install with all sub-modules run:
 
     git clone --recurse-submodules git@github.com:kirkins/puppet-pop-machine.git
