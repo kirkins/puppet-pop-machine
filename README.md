@@ -2,6 +2,10 @@
 
 [Presentation](https://github.com/kirkins/puppet-pop-machine/blob/master/presentation.org) format is [emacs org-mode](http://orgmode.org/).
 
+Presentation made with Emacs [Presentation-Outline-Mode](https://p4bl0.net/shebang/emacs-outline-presentation-mode.html)
+
+![Presentation GIF](./imgs/Puppet-Pop-Machine.gif)
+
 To install with all sub-modules run:
 
     git clone --recurse-submodules git@github.com:kirkins/puppet-pop-machine.git
